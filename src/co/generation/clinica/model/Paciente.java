@@ -84,4 +84,11 @@ public class Paciente implements Registrable {
     public String toString() {
         return String.join(" - ", nombre, apellido, cedula, telefono);
     }
+    public String getDatosRegistro() {
+        return toString();
+    }
+    public boolean esValido() {
+        return cedula != null && !cedula.trim().isEmpty() && nombre != null && !nombre.trim().isEmpty() && telefono != null && telefono.matches("^[0-9]{7,10}$"
+        );
+    }
 }

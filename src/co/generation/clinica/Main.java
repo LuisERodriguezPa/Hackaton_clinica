@@ -5,13 +5,16 @@ import co.generation.clinica.services.ClinicaService;
 import co.generation.clinica.model.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         ClinicaService clinica = new ClinicaService();
         Scanner entrada = new Scanner(System.in);
+        Medico medicoDePrueba = new Medico("Pedro", "Paramo", Especialidad.PEDIATRIA);
         int opcion;
         DatosCSV.cargar(clinica);
         // bucle while con Scanner para el menú...
@@ -50,11 +53,21 @@ public class Main {
                     clinica.registrarPaciente(nuevoPaciente);
                     break;
                 case 2:
+                    System.out.println("***Registrar Medico***");
+                    System.out.print("Ingrese el nombre del medico: ");
+                    String nombreMedico= entrada.next();
+                    System.out.print("Ingrese el apellido del medico: ");
+                    String apellidoMedico = entrada.next();
+                    Especialidad especialidad = Especialidad.CARDIOLOGIA;
+
+                    Medico nuevoMedico = new Medico(nombreMedico, apellidoMedico, especialidad);
+                    clinica.registrarMedico(nuevoMedico);
+
                     break;
                 case 3:
                     System.out.print("Cedula paciente: ");
-                    String cedula = sc.next();
-                    Paciente paciente = servicio.buscarPorCedula(cedula);
+                    String cedulaPaciente = entrada.next();
+                    Paciente paciente = clinica.buscarPorCedula(cedulaPaciente);
 
                     if (paciente == null) {
                         System.out.println("Paciente no encontrado");
@@ -62,10 +75,10 @@ public class Main {
                     }
 
                     System.out.print("Nombre medico: ");
-                    String nombre = sc.next();
+                    String nombreMedico2 = entrada.next();
                     System.out.print("Apellido medico: ");
-                    String apellido = sc.next();
-                    Medico medico = servicio.buscarPorNombreApellido(nombre, apellido);
+                    String apellidoMedico2 = entrada.next();
+                    Medico medico = clinica.buscarPorNombreApellido(nombreMedico2, apellidoMedico2);
 
                     if (medico == null) {
                         System.out.println("Medico no encontrado");
@@ -73,20 +86,20 @@ public class Main {
                     }
 
                     System.out.print("Año: ");
-                    int anio = sc.nextInt();
+                    int anio = entrada.nextInt();
                     System.out.print("Mes: ");
-                    int mes = sc.nextInt();
+                    int mes = entrada.nextInt();
                     System.out.print("Dia: ");
-                    int dia = sc.nextInt();
+                    int dia = entrada.nextInt();
                     System.out.print("Hora: ");
-                    int hora = sc.nextInt();
+                    int hora = entrada.nextInt();
                     System.out.print("Minuto: ");
-                    int minuto = sc.nextInt();
+                    int minuto = entrada.nextInt();
 
                     LocalDateTime fechaHora = LocalDateTime.of(anio, mes, dia, hora, minuto);
 
                     Turno turno = new Turno(paciente, medico, fechaHora);
-                    servicio.asignarTurno(turno);
+                    clinica.asignarTurno(turno);
                     System.out.println("Turno asignado");
                     break;
                 case 4:
@@ -96,8 +109,8 @@ public class Main {
                     System.out.println("Por favor Ingrese la fecha con este formato (yyyy-mm-dd):");
                     fechaString = entrada.nextLine();
                     fecha = LocalDate.parse(fechaString);
-                    for(Object turno:clinica.listarTurnosDelDia(fecha)){
-                        System.out.println(turno);
+                    for(Object turnoT:clinica.listarTurnosDelDia(fecha)){
+                        System.out.println(turnoT);
                     }
                     break;
                 case 5:
@@ -109,23 +122,43 @@ public class Main {
                     break;
                 case 6:
                     System.out.print("Ingrese el nombre del médico: ");
-                    String nombreMedico = entrada.next();
+                    String nombreMedico3 = entrada.next();
                     System.out.print("Ingrese el apellido del médico: ");
-                    String apellidoMedico = entrada.next();
-                    clinica.verTurnosPorMedico(nombreMedico, apellidoMedico);
+                    String apellidoMedico3 = entrada.next();
+                    clinica.buscarPorMedico(medicoDePrueba);
                     break;
                 case 7:
+                    System.out.println("Buscar todas las citas del paciente");
                     System.out.print("Ingrese la cédula del paciente: ");
-                    String cedulaPaciente = entrada.next();
-                    clinica.verTurnosPorPaciente(cedulaPaciente);
+                    String cedula2 = entrada.next();
+                    System.out.print("Ingrese el nombre del paciente: ");
+                    String nombre2 = entrada.next();
+                    System.out.print("Ingrese el apellido del paciente: ");
+                    String apellido2 = entrada.next();
+                    System.out.print("Ingrese el Teléfono del paciente: ");
+                    String telefono2 = entrada.next();
+                    Paciente nuevoPaciente2 = new Paciente(cedula2, nombre2, apellido2, telefono2);
+                    clinica.buscarPorPaciente(nuevoPaciente2);
                     break;
                 case 8:
+                    System.out.println("***Cambiar estado de turno***");
+                    int idTurno;
+                    String nuevoEstado;
+                    System.out.println("Ingrese el id del turno:");
+                    idTurno = entrada.nextInt();
+                    System.out.println("Ingrese el nuevo estado: ");
+                    nuevoEstado = entrada.nextLine();
+                    EstadoTurno estado = EstadoTurno.valueOf(nuevoEstado.toUpperCase());
+                    clinica.cambiarEstadoTurno(idTurno,estado);
+
                     break;
                 case 9:
                     clinica.listarPacientes();
                     break;
                 case 10:
-                    clinicaService.listarMedicos();
+                    clinica.listarMedicos();
+                    break;
+                case 0:
                     break;
                 default:
                     System.out.println("Opcion Invalida Ingrese una opcion correcta");

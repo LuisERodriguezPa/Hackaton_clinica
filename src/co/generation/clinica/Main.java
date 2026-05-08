@@ -107,11 +107,13 @@ public class Main {
                     LocalDate fecha;
                     System.out.println("***Listar todos los turnos****");
                     System.out.println("Por favor Ingrese la fecha con este formato (yyyy-mm-dd):");
+                    entrada.nextLine();
                     fechaString = entrada.nextLine();
-                    fecha = LocalDate.parse(fechaString);
-                    for(Object turnoT:clinica.listarTurnosDelDia(fecha)){
+                    LocalDate fecha2 = LocalDate.parse(fechaString);
+                    clinica.listarTurnosDelDia(fecha2);
+                    /*for(Object turnoT:clinica.listarTurnosDelDia(fecha)){
                         System.out.println(turnoT);
-                    }
+                    }*/
                     break;
                 case 5:
                     System.out.println("***Cancelar Turno****");
@@ -125,7 +127,7 @@ public class Main {
                     String nombreMedico3 = entrada.next();
                     System.out.print("Ingrese el apellido del médico: ");
                     String apellidoMedico3 = entrada.next();
-                    clinica.buscarPorMedico(medicoDePrueba);
+                    System.out.println(clinica.buscarPorMedico(medicoDePrueba));
                     break;
                 case 7:
                     System.out.println("Buscar todas las citas del paciente");
@@ -146,10 +148,10 @@ public class Main {
                     String nuevoEstado;
                     System.out.println("Ingrese el id del turno:");
                     idTurno = entrada.nextInt();
-                    System.out.println("Ingrese el nuevo estado: ");
+                    /*System.out.println("Ingrese el nuevo estado: ");
                     nuevoEstado = entrada.nextLine();
-                    EstadoTurno estado = EstadoTurno.valueOf(nuevoEstado.toUpperCase());
-                    clinica.cambiarEstadoTurno(idTurno,estado);
+                    EstadoTurno estado = EstadoTurno.valueOf(nuevoEstado.trim().toUpperCase());*/
+                    clinica.cambiarEstadoTurno(idTurno,EstadoTurno.ATENDIDO);
 
                     break;
                 case 9:

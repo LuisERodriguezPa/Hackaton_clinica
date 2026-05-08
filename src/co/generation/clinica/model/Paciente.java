@@ -23,7 +23,9 @@ public class Paciente implements Registrable {
         this.apellido = apellido;
         this.telefono = telefono;
     }
-
+    public void setId(int id) {
+        this.id = id;
+    }
     public int getId() {
         return id;
     }

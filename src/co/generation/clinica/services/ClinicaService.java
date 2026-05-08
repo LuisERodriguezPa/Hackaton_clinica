@@ -27,12 +27,13 @@ public class ClinicaService implements Consultable {
 
         int maxId = 0;
         for (Paciente pc : pacientes) {
-            if (p.getId() > maxId) {
+            if (pc.getId() > maxId) {
                 maxId = pc.getId();
             }
         }
         int nuevoId = maxId + 1;
         p.setId(nuevoId);
+        pacientes.add(p);
         System.out.println("Paciente registrado exitosamente: " + p);
         return;
     }
